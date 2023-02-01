@@ -3,7 +3,7 @@ import pandas as pd
 from cli import config
 from cli.upsolver import requester, auth_filler, poller, query
 
-from upsolverapi.src.utils import generate_local_api_token
+from upsolver.sdk.utils import generate_local_api_token
 
 
 class UpsolverApi:
