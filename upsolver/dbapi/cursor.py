@@ -58,9 +58,13 @@ class Cursor:
 
     def _prepare_query_results(self, query_response):
         first_response = next(query_response)
-        self._rowcount = -1 if first_response.get('has_next_page', True) else len(first_response['data'])
-        self._description = [(c['name'], c['columnType'].get('clazz'), None, None, None, None, None)
-                             for c in first_response['columns']]
+        if 'data' in first_response:
+            self._rowcount = -1 if first_response.get('has_next_page', True) else len(first_response['data'])
+            self._description = [(c['name'], c['columnType'].get('clazz'), None, None, None, None, None)
+                                 for c in first_response['columns']]
+        else:
+            self._rowcount = -1
+            self._description = None
         self._iterator = self._generate_rows(first_response, query_response)
         return self._iterator
 

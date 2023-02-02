@@ -15,10 +15,10 @@ print(rows)
 ```
 
 
-The DBAPI implementation in `upsolverapi.dbapi` provides methods to retrieve fewer
+The DBAPI implementation in `upsolver.dbapi` provides methods to retrieve fewer
 rows for example `Cursor.fetchone()` or `Cursor.fetchmany()`. By default
 `Cursor.fetchmany()` fetches one row. Set
-`upsolverapi.dbapi.Cursor.arraysize` to fetch specific number of rows with `Cursor.fetchmany()`.
+`Cursor.arraysize` to fetch specific number of rows with `Cursor.fetchmany()`.
 
 After the `Cursor.execute` was invoked, descriptive attributes become available.
 The `Cursor.rowcount` contains the number of rows produced by execute. 
