@@ -6,9 +6,9 @@ https://www.python.org/dev/peps/pep-0249/ .
 from pathlib import Path
 from typing import Optional, Sequence, Type, Union
 
-from upsolverapi.dbapi.utils import logger, check_closed
-from upsolverapi.dbapi.exceptions import NotSupportedError, InterfaceError
-from upsolverapi.dbapi.types_definitions import (
+from .utils import logger, check_closed
+from .exceptions import NotSupportedError, InterfaceError
+from .types_definitions import (
     QueryParameters,
     ResultRow,
     ResultSet,

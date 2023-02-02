@@ -10,7 +10,7 @@ from cli.upsolver.response import UpsolverResponse
 from cli.upsolver.poller import SimpleResponsePoller
 from cli.utils import convert_time_str
 
-from upsolverapi.dbapi.exceptions import InterfaceError
+from .exceptions import InterfaceError
 
 
 LOG_NAME = "pep249-upsolver"

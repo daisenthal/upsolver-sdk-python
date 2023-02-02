@@ -8,9 +8,9 @@ from cli.upsolver.query import RestQueryApi
 from cli.upsolver.requester import Requester
 from cli.upsolver.auth_filler import TokenAuthFiller
 
-from upsolverapi.dbapi.utils import logger, get_duration_in_seconds, check_closed, DBAPIResponsePoller
-from upsolverapi.dbapi.exceptions import NotSupportedError, InterfaceError
-from upsolverapi.dbapi.cursor import Cursor
+from .utils import logger, get_duration_in_seconds, check_closed, DBAPIResponsePoller
+from .exceptions import NotSupportedError, InterfaceError
+from .cursor import Cursor
 
 
 def connect(token, api_url):

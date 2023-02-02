@@ -3,7 +3,7 @@
 Use the DBAPI interface to query Upsolver:
 
 ```python
-import upsolverapi.dbapi as upsolver
+import upsolver.dbapi as upsolver
 conn=upsolver.connect(
     token='',
     apiurl=''
@@ -11,7 +11,9 @@ conn=upsolver.connect(
 cur = conn.cursor()
 cur.execute('SELECT * FROM catalog.database.transformed_data LIMIT 10')
 rows = cur.fetchall()
+print(rows)
 ```
+
 
 The DBAPI implementation in `upsolverapi.dbapi` provides methods to retrieve fewer
 rows for example `Cursor.fetchone()` or `Cursor.fetchmany()`. By default
