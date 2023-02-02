@@ -3,7 +3,7 @@
 Use the DBAPI interface to query Upsolver:
 
 ```python
-import upsolve.dbapi as upsolver
+import upsolver.dbapi as upsolver
 conn=upsolver.connect(
     token='',
     apiurl=''
