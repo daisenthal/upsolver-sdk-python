@@ -4,9 +4,9 @@ https://www.python.org/dev/peps/pep-0249/ .
 
 """
 
-from cli.upsolver.query import RestQueryApi
-from cli.upsolver.requester import Requester
-from cli.upsolver.auth_filler import TokenAuthFiller
+from ..client.query import RestQueryApi
+from ..client.requester import Requester
+from ..client.auth_filler import TokenAuthFiller
 
 from .utils import logger, get_duration_in_seconds, check_closed, DBAPIResponsePoller
 from .exceptions import NotSupportedError, InterfaceError

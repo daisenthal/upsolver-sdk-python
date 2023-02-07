@@ -3,12 +3,12 @@ import time
 from sys import stderr
 from functools import wraps
 
-from cli import errors
-from cli.errors import PayloadErr, InvalidOptionErr
-from cli.upsolver.requester import Requester
-from cli.upsolver.response import UpsolverResponse
-from cli.upsolver.poller import SimpleResponsePoller
-from cli.utils import convert_time_str
+from ..client import errors
+from ..client.errors import PayloadErr, InvalidOptionErr
+from ..client.requester import Requester
+from ..client.response import UpsolverResponse
+from ..client.poller import SimpleResponsePoller
+from ..utils import convert_time_str
 
 from .exceptions import InterfaceError
 
