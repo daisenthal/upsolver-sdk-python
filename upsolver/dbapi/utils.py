@@ -4,7 +4,7 @@ from sys import stderr
 from functools import wraps
 
 from ..client import errors
-from ..client.errors import PayloadErr, InvalidOptionErr
+from ..client.errors import PayloadErr
 from ..client.requester import Requester
 from ..client.response import UpsolverResponse
 from ..client.poller import SimpleResponsePoller
@@ -28,18 +28,15 @@ def get_duration_in_seconds(duration):
     if type(duration) == int:
         return float(duration)
     if type(duration) == str:
-        try:
-            return convert_time_str(None, None, duration)
-        except InvalidOptionErr:
-            raise InterfaceError
-    raise InterfaceError
+        return convert_time_str(None, None, duration)
+    raise ValueError
 
 
 def check_closed(func):
     @wraps(func)
     def wrapped(self, *args, **kwargs):
         if self.closed:
-            raise InterfaceError
+            raise InterfaceError("Object is closed and can't be used")
         return func(self, *args, **kwargs)
     return wrapped
 

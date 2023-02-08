@@ -4,7 +4,7 @@ Exceptions outlined in PEP 249.
 """
 
 
-class Error(BaseException):
+class Error(Exception):
     """Base error outlined in PEP 249."""
 
 

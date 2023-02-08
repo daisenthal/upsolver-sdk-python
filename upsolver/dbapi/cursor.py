@@ -6,8 +6,10 @@ https://www.python.org/dev/peps/pep-0249/ .
 from pathlib import Path
 from typing import Optional, Sequence, Type, Union
 
+from ..client import errors as upsolver_errors
+
 from .utils import logger, check_closed
-from .exceptions import NotSupportedError, InterfaceError
+from .exceptions import *
 from .types_definitions import (
     QueryParameters,
     ResultRow,
@@ -40,8 +42,20 @@ class Cursor:
         if parameters is not None:
             raise NotSupportedError
 
-        query_response = self._connection.query(operation)
-        return self._prepare_query_results(query_response)
+        try:
+            query_response = self._connection.query(operation)
+            return self._prepare_query_results(query_response)
+        except upsolver_errors.InternalErr as err:
+            raise InternalError('Failed to execute the operation because of internal Upsolver failure') from err
+        except upsolver_errors.AuthErr as err:
+            raise OperationalError('Failed to execute the operation because of authentication') from err
+        except upsolver_errors.ApiErr as err:
+            raise OperationalError('Failed to execute the operation because Upsolver returned an error response') \
+                from err
+        except upsolver_errors.NetworkErr as err:
+            raise OperationalError("Failed to execute the operation because Upsolver didn't answer") from err
+        except Exception as err:
+            raise DatabaseError('Failed to execute operation') from err
 
     @check_closed
     def executefile(self, file_path: str):
@@ -52,7 +66,7 @@ class Cursor:
 
         p = Path(file_path)
         if not p.exists():
-            raise InterfaceError
+            raise InterfaceError(f'Failed to execute the operation because {file_path} is invalid')
         operation = p.read_text()
         return self.execute(operation)
 
@@ -135,7 +149,7 @@ class Cursor:
         if value > 0:
             self._arraysize = value
         else:
-            raise InterfaceError
+            raise ValueError('arraysize should be a positive number')
 
     @check_closed
     def fetchone(self) -> Optional[ResultRow]:
@@ -150,7 +164,7 @@ class Cursor:
         logger.debug(f"pep249 fetchone {self.__class__.__name__}")
 
         if self._iterator is None:
-            raise InterfaceError
+            raise InterfaceError('Failed to fetch results')
 
         try:
             return next(self._iterator)
@@ -174,7 +188,7 @@ class Cursor:
         logger.debug(f"pep249 fetchmany {self.__class__.__name__}")
 
         if self._iterator is None:
-            raise InterfaceError
+            raise InterfaceError('Failed to fetch results')
 
         result = []
         for _ in range(size or self.arraysize):
@@ -199,7 +213,7 @@ class Cursor:
         logger.debug(f"pep249 fetchall {self.__class__.__name__}")
 
         if self._iterator is None:
-            raise InterfaceError
+            raise InterfaceError('Failed to fetch results')
 
         result = []
         while True:
