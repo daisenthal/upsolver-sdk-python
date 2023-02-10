@@ -3,19 +3,22 @@ Implementation of connection by the Python DBAPI 2.0 as described in
 https://www.python.org/dev/peps/pep-0249/ .
 
 """
+import logging
 
 from ..client.query import RestQueryApi
 from ..client.requester import Requester
 from ..client.auth_filler import TokenAuthFiller
 from ..client import errors as upsolver_errors
 
-from .utils import logger, get_duration_in_seconds, check_closed, DBAPIResponsePoller
+from .utils import get_duration_in_seconds, check_closed, DBAPIResponsePoller
 from .exceptions import *
 from .cursor import Cursor
 
+logger = logging.getLogger(__name__)
+
 
 def connect(token, api_url):
-    logger.debug(f"pep249 Creating connection for object ")
+    logger.debug(f"Creating connection")
     return Connection(token, api_url)
 
 
@@ -42,12 +45,12 @@ class Connection:
 
     @check_closed
     def cursor(self):
-        logger.debug(f"pep249 Cursor creating for object {self.__class__.__name__}")
+        logger.debug(f"{self.__class__.__name__} create cursor")
         return Cursor(self)
 
     @check_closed
     def close(self) -> None:
-        logger.debug(f"pep249 close {self.__class__.__name__}")
+        logger.debug(f"{self.__class__.__name__} close")
         self._closed = True
 
     @property
@@ -62,5 +65,5 @@ class Connection:
 
     @check_closed
     def query(self, command):
-        logger.debug(f"pep249 Execute query")
+        logger.info(f'{self.__class__.__name__} execute query "{command}"')
         return self._api.execute(command, self._timeout)

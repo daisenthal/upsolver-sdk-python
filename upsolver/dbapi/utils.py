@@ -1,6 +1,4 @@
-import logging
 import time
-from sys import stderr
 from functools import wraps
 
 from ..client import errors
@@ -13,15 +11,6 @@ from ..utils import convert_time_str
 from .exceptions import InterfaceError
 
 
-LOG_NAME = "pep249-upsolver"
-DEFAULT_LOGLEVEL = logging.DEBUG
-logger = logging.getLogger(LOG_NAME)
-logger.setLevel(DEFAULT_LOGLEVEL)
-handler = logging.StreamHandler(stderr)
-handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
-logger.addHandler(handler)
-
-
 def get_duration_in_seconds(duration):
     if type(duration) == float:
         return duration
@@ -29,7 +18,7 @@ def get_duration_in_seconds(duration):
         return float(duration)
     if type(duration) == str:
         return convert_time_str(None, None, duration)
-    raise ValueError
+    raise ValueError('Invalid type of duration')
 
 
 def check_closed(func):

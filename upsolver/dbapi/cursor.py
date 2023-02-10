@@ -3,12 +3,13 @@ Implementation of cursor by the Python DBAPI 2.0 as described in
 https://www.python.org/dev/peps/pep-0249/ .
 
 """
+import logging
 from pathlib import Path
 from typing import Optional, Sequence, Type, Union
 
 from ..client import errors as upsolver_errors
 
-from .utils import logger, check_closed
+from .utils import check_closed
 from .exceptions import *
 from .types_definitions import (
     QueryParameters,
@@ -19,6 +20,8 @@ from .types_definitions import (
     ProcName,
     ProcArgs,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class Cursor:
@@ -38,7 +41,7 @@ class Cursor:
         as outlined in PEP 249.
 
         """
-        logger.debug(f"pep249 execute {self.__class__.__name__} query '{operation}'")
+        logger.debug(f'{self.__class__.__name__} execute query "{operation}"')
         if parameters is not None:
             raise NotSupportedError
 
@@ -62,7 +65,7 @@ class Cursor:
         """
         Execute an SQL query from file.
         """
-        logger.debug(f"pep249 executefile {self.__class__.__name__} file '{file_path}'")
+        logger.debug(f'{self.__class__.__name__} executefile with file "{file_path}"')
 
         p = Path(file_path)
         if not p.exists():
@@ -115,7 +118,7 @@ class Cursor:
 
         If no execute has been performed or there is no result set, return None.
         """
-        logger.debug(f"pep249 description {self.__class__.__name__}")
+        logger.debug(f"{self.__class__.__name__} get description")
         return self._description
 
     @property
@@ -125,7 +128,7 @@ class Cursor:
         If no execute has been performed or the rowcount cannot be determined,
         this should return -1.
         """
-        logger.debug(f"pep249 rowcount {self.__class__.__name__}")
+        logger.debug(f"{self.__class__.__name__} get rowcount")
         return self._rowcount
 
     @property
@@ -137,14 +140,14 @@ class Cursor:
 
         Defaults to 1, meaning fetch a single row at a time.
         """
-        logger.debug(f"pep249 arraysize {self.__class__.__name__}")
+        logger.debug(f"{self.__class__.__name__} get arraysize")
 
         return self._arraysize
 
     @arraysize.setter
     @check_closed
     def arraysize(self, value: int):
-        logger.debug(f"pep249 arraysize {self.__class__.__name__}")
+        logger.debug(f"{self.__class__.__name__} set arraysize")
 
         if value > 0:
             self._arraysize = value
@@ -161,7 +164,7 @@ class Cursor:
         error can be raised.
 
         """
-        logger.debug(f"pep249 fetchone {self.__class__.__name__}")
+        logger.debug(f"Fetchone {self.__class__.__name__}")
 
         if self._iterator is None:
             raise InterfaceError('Failed to fetch results')
@@ -185,7 +188,7 @@ class Cursor:
         produce a result set, an error can be raised.
 
         """
-        logger.debug(f"pep249 fetchmany {self.__class__.__name__}")
+        logger.debug(f"{self.__class__.__name__} fetchmany")
 
         if self._iterator is None:
             raise InterfaceError('Failed to fetch results')
@@ -210,7 +213,7 @@ class Cursor:
         produce a result set, an error can be raised.
 
         """
-        logger.debug(f"pep249 fetchall {self.__class__.__name__}")
+        logger.debug(f"{self.__class__.__name__} fetchall")
 
         if self._iterator is None:
             raise InterfaceError('Failed to fetch results')
@@ -236,7 +239,7 @@ class Cursor:
 
     @check_closed
     def close(self) -> None:
-        logger.debug(f"pep249 close {self.__class__.__name__}")
+        logger.debug(f"{self.__class__.__name__} close")
         self._closed = True
 
     @property
