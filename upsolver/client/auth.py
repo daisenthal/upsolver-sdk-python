@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from ..client.errors import InternalErr
+from upsolver.client.errors import InternalErr
 
 
 class AuthApi(metaclass=ABCMeta):

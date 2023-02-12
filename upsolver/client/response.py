@@ -2,8 +2,8 @@ from typing import Any, Optional
 
 from requests import Response
 
-from . import errors
-from ..utils import NestedDictAccessor
+from upsolver.client import errors
+from upsolver.utils import NestedDictAccessor
 
 
 class UpsolverResponse(object):
