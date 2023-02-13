@@ -1,9 +1,9 @@
 from abc import ABCMeta, abstractmethod
 from typing import Iterator
 
-from .entities import ExecutionResult
-from .poller import ResponsePollerBuilder
-from .requester import Requester
+from upsolver.client.entities import ExecutionResult
+from upsolver.client.poller import ResponsePollerBuilder
+from upsolver.client.requester import Requester
 
 
 class QueryApi(metaclass=ABCMeta):

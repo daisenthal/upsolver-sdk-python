@@ -1,9 +1,9 @@
 from yarl import URL
 
-from .errors import ApiUnavailable
-from .auth_filler import TokenAuthFiller
-from .requester import Requester
-from ..utils import parse_url
+from upsolver.client.errors import ApiUnavailable
+from upsolver.client.auth_filler import TokenAuthFiller
+from upsolver.client.requester import Requester
+from upsolver.utils import parse_url
 
 
 def get_base_url(base_url: URL, token: str) -> URL:

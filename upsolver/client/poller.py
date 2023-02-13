@@ -1,11 +1,10 @@
 import time
 from typing import Callable, Optional
 
-from . import errors
-from .errors import PayloadErr
-from .entities import ExecutionResult
-from .requester import Requester
-from .response import UpsolverResponse
+from upsolver.client import errors
+from upsolver.client.entities import ExecutionResult
+from upsolver.client.requester import Requester
+from upsolver.client.response import UpsolverResponse
 
 """
 Polling is performed on responses that are "pending": we don't know when the results will be
@@ -57,7 +56,7 @@ class SimpleResponsePoller(object):
 
         def verify_json(j: dict) -> dict:
             if 'status' not in j:
-                raise PayloadErr(resp, 'expected "status" field in response object')
+                raise errors.PayloadErr(resp, 'expected "status" field in response object')
             return j
 
         def extract_json() -> dict:
@@ -66,10 +65,10 @@ class SimpleResponsePoller(object):
                 return resp_json
             elif type(resp_json[0]) is dict:
                 if len(resp_json) > 1:
-                    raise PayloadErr(resp, 'got list with multiple objects')
+                    raise errors.PayloadErr(resp, 'got list with multiple objects')
                 return resp_json[0]
             else:
-                raise PayloadErr(resp, 'failed to find result object')
+                raise errors.PayloadErr(resp, 'failed to find result object')
 
         rjson = verify_json(extract_json())
         status = rjson['status']

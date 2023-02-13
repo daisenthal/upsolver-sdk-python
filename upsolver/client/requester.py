@@ -4,16 +4,16 @@ from typing import Callable, Optional
 from requests import Request, Response, Session
 from yarl import URL
 
-from . import errors
-from .auth_filler import AuthFiller
-from .response import UpsolverResponse
-from ..utils import get_logger
+from upsolver.client import errors
+from upsolver.client.auth_filler import AuthFiller
+from upsolver.client.response import UpsolverResponse
+from upsolver.utils import get_logger
 
 """
 ResponseValidator gets a response, checks it, and returns it if everything is ok. If something
 is wrong (e.g. status code is invalid) it raises an Exception
 """
-ResponseVaidator = Callable[[Response], Response]
+ResponseValidator = Callable[[Response], Response]
 
 
 def default_resp_validator(resp: Response) -> Response:
@@ -43,7 +43,7 @@ class Requester(object):
     def __init__(self,
                  base_url: URL,
                  auth_filler: Optional[AuthFiller] = None,
-                 resp_validator: Optional[ResponseVaidator] = default_resp_validator):
+                 resp_validator: Optional[ResponseValidator] = default_resp_validator):
         """
         :param base_url: all requests will be issued to this host
         :param auth_filler: will be used to modify Request objects prior to sending them in order to

@@ -1,7 +1,7 @@
 from abc import ABC
 
-from .auth import AuthApi
-from .query import QueryApi
+from upsolver.client.auth import AuthApi
+from upsolver.client.query import QueryApi
 
 """
 General pattern you'll see here:

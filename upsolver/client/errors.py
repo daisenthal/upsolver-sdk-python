@@ -7,7 +7,7 @@ from typing import Any, Optional
 
 from yarl import URL
 
-from .requester import UpsolverResponse
+from upsolver.client.requester import UpsolverResponse
 
 
 class ExitCode(Enum):
