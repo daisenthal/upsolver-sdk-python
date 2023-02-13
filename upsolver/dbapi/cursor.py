@@ -49,16 +49,11 @@ class Cursor:
             query_response = self._connection.query(operation)
             return self._prepare_query_results(query_response)
         except upsolver_errors.InternalErr as err:
-            raise InternalError('Failed to execute the operation because of internal Upsolver failure') from err
-        except upsolver_errors.AuthErr as err:
-            raise OperationalError('Failed to execute the operation because of authentication') from err
-        except upsolver_errors.ApiErr as err:
-            raise OperationalError('Failed to execute the operation because Upsolver returned an error response') \
-                from err
-        except upsolver_errors.NetworkErr as err:
-            raise OperationalError("Failed to execute the operation because Upsolver didn't answer") from err
+            raise InternalError(err) from err
+        except upsolver_errors.RequestErr as err:
+            raise OperationalError(err) from err
         except Exception as err:
-            raise DatabaseError('Failed to execute operation') from err
+            raise DatabaseError(err) from err
 
     @check_closed
     def executefile(self, file_path: str):
