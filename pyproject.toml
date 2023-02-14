@@ -5,12 +5,15 @@ description = "Python API and SDK for Upsolver"
 authors = ["Your Name <you@example.com>"]
 license = "TBD"
 readme = "README.md"
-packages = [{include = "upsolver/sdk"},{include = "upsolver/dbapi"}]
+packages = [
+    {include = "upsolver/sdk"},
+    {include = "upsolver/dbapi"},
+    {include = "upsolver/client"}
+    ]
 
 [tool.poetry.dependencies]
 python = "^3.7"
 requests = "2.28.2"
-upsolver-cli = "0.6.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.1"
