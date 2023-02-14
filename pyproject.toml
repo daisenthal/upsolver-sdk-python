@@ -6,6 +6,7 @@ authors = ["Your Name <you@example.com>"]
 license = "TBD"
 readme = "README.md"
 packages = [
+    {include = "upsolver/utils.py"},
     {include = "upsolver/sdk"},
     {include = "upsolver/dbapi"},
     {include = "upsolver/client"}
