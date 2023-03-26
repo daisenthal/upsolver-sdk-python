@@ -44,7 +44,7 @@ jobs:
       - name: Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          password: ${{ secrets.TEST_PYPI_TOKEN_NESTLOGIC }}
+          password: ${{ secrets.PYPI_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
           
       - name: Upload Release Asset (built distribution)
