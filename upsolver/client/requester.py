@@ -1,10 +1,9 @@
+from __future__ import annotations
+from upsolver.client.exceptions import AuthError, ApiError
 import uuid
 from typing import Callable, Optional
-
 from requests import Request, Response, Session
 from yarl import URL
-
-from upsolver.client import errors
 from upsolver.client.auth_filler import AuthFiller
 from upsolver.client.response import UpsolverResponse
 from upsolver.utils import get_logger
@@ -19,15 +18,15 @@ ResponseValidator = Callable[[Response], Response]
 def default_resp_validator(resp: Response) -> Response:
     uresp = UpsolverResponse(resp)
     if resp.status_code == 403:
-        raise errors.AuthErr(uresp)
+        raise AuthError(uresp)
     if int(resp.status_code / 100) != 2:
-        raise errors.ApiErr(uresp)
+        raise ApiError(uresp)
     return resp
 
 
 class Requester(object):
     """
-    A very thin wrapper around requests package that handles common errors and response
+    A very thin wrapper around requests package that handles common exceptions and response
     transformations to usable objects (e.g. extracting payload as json automatically).
 
     Requester is not meant  "hide" the fact that we're using the requests package. It simply
@@ -110,30 +109,3 @@ class Requester(object):
     def patch(self, path: str, json: Optional[dict] = None) -> UpsolverResponse:
         payload = json if json is not None else {}
         return self._send(path, Request(method='PATCH'), payload)
-
-    def get_list(self, path: str, list_field_name: Optional[str] = None) -> list:
-        resp = self.get(path)
-
-        def raise_err() -> None:
-            raise errors.PayloadErr(resp, 'expected list of elements')
-
-        try:
-            j = resp.json()
-
-            # if given a list_field_name, look for the list there and only there
-            if list_field_name is not None:
-                if type(j) is not dict or j.get(list_field_name) is None:
-                    raise_err()
-                else:
-                    return j[list_field_name]
-
-            # otherwise, the entire response body must be the list
-            if type(j) is list:
-                return j
-
-            # unknown payload
-            raise_err()
-        except Exception:
-            raise_err()
-
-        return []  # placate mypy

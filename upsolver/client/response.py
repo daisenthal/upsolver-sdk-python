@@ -1,8 +1,6 @@
+import upsolver.client.exceptions as exceptions
 from typing import Any, Optional
-
 from requests import Response
-
-from upsolver.client import errors
 from upsolver.utils import NestedDictAccessor
 
 
@@ -28,7 +26,7 @@ class UpsolverResponse(object):
         try:
             return NestedDictAccessor(payload)[item]
         except KeyError:
-            raise errors.PayloadPathKeyErr(self, item)
+            raise exceptions.PayloadPathKeyError(self, item)
 
     def get(self, item: str) -> Optional[Any]:
         try:

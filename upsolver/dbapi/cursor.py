@@ -6,23 +6,11 @@ https://www.python.org/dev/peps/pep-0249/ .
 import logging
 from pathlib import Path
 from typing import Optional, Sequence, Type, Union
-
-from ..client import errors as upsolver_errors
-
-from .utils import check_closed
-from .exceptions import *
-from .types_definitions import (
-    QueryParameters,
-    ResultRow,
-    ResultSet,
-    SQLQuery,
-    ColumnDescription,
-    ProcName,
-    ProcArgs,
-)
+from upsolver.client.exceptions import NotSupportedError, OperationalError, DatabaseError, InterfaceError
+from upsolver.dbapi.utils import check_closed
+from upsolver.dbapi.types_definitions import QueryParameters, ResultRow, ResultSet, SQLQuery, ColumnDescription, ProcName, ProcArgs
 
 logger = logging.getLogger(__name__)
-
 
 class Cursor:
     """A PEP 249 compliant Cursor protocol."""
@@ -51,14 +39,11 @@ class Cursor:
         logger.debug(f'{self.__class__.__name__} execute query "{operation}"')
         if parameters is not None:
             raise NotSupportedError
-
         try:
             query_response = self._connection.query(operation)
             return self._prepare_query_results(query_response)
-        except upsolver_errors.InternalErr as err:
-            raise InternalError(err) from err
-        except upsolver_errors.RequestErr as err:
-            raise OperationalError(err) from err
+        except OperationalError as err:
+            raise OperationalError(f'Wrong SQL query: {err}')
         except Exception as err:
             raise DatabaseError(err) from err
 

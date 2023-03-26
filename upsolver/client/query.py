@@ -1,34 +1,17 @@
-from abc import ABCMeta, abstractmethod
 from typing import Iterator
-
-from upsolver.client.entities import ExecutionResult
 from upsolver.client.poller import ResponsePollerBuilder
 from upsolver.client.requester import Requester
+from upsolver.client.exceptions import NotSupportedError
 
+ExecutionResult = list
 
-class QueryApi(metaclass=ABCMeta):
-    @abstractmethod
-    def execute(self, query: str, timeout_sec: float) -> Iterator[ExecutionResult]:
-        """
-        :param query: a SQL statement
-        :return: since queries may result in large responses, they are returned in chunks.
-        """
-        pass
-
-    @abstractmethod
-    def check_syntax(self, expression: str) -> list:
-        pass
-
-
-class RestQueryApi(QueryApi):
+class RestQueryApi():
     def __init__(self, requester: Requester, poller_builder: ResponsePollerBuilder):
         self.requester = requester
         self.poller_builder = poller_builder
 
     def check_syntax(self, expression: str) -> list:
-        raise NotImplementedError()
-
-    _NextResultPath = str  # results are paged, with "next pointer" being a path of url
+        raise NotSupportedError()
 
     def execute(self, query: str, timeout_sec: float) -> Iterator[ExecutionResult]:
         assert len(query) > 0

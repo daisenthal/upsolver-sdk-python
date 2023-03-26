@@ -1,6 +1,4 @@
 import pytest
-
-from upsolver.client import errors
 from upsolver.utils import NestedDictAccessor
 
 

@@ -1,7 +1,5 @@
 import pandas as pd
-
-from upsolver.client import errors, requester, auth_filler, poller, query
-
+from upsolver.client import requester, auth_filler, poller, query
 from upsolver.sdk.utils import generate_local_api_token
 
 
@@ -37,5 +35,3 @@ class UpsolverApi:
 if __name__ == "__main__":
     api = UpsolverApi()
     print(api)
-
-
