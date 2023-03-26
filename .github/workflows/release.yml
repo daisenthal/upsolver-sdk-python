@@ -14,9 +14,10 @@ jobs:
       - name: Determine Version
         id: release-version
         run: |
-          echo "::set-output name=full::${{ github.ref_name }}"
+          echo "full=${{ github.ref_name }}" >> $GITHUB_OUTPUT
           SIMPLE=$(echo ${{ github.ref_name }} | sed -e s/^v//)
-          echo "::set-output name=simple::$SIMPLE"
+          echo "simple=$SIMPLE" >> $GITHUB_OUTPUT
+
 
       - name: Set up Python
         uses: actions/setup-python@v4
