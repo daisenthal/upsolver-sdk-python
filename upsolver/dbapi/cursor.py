@@ -62,6 +62,7 @@ class Cursor:
 
     def _prepare_query_results(self, query_response):
         first_response = next(query_response)
+        logger.debug(f"{self.__class__.__name__} Query_response: {first_response}")
         if 'data' in first_response:
             self._rowcount = -1 if first_response.get('has_next_page', True) else len(first_response['data'])
             self._description = [(c['name'], c['columnType'].get('clazz'), None, None, None, None, None)
