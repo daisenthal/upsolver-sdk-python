@@ -5,6 +5,10 @@ from upsolver.client.exceptions import NotSupportedError
 
 ExecutionResult = list
 
+preferredQueryEngine = {"displayName": "Upsolver",
+                            "engine": {
+                                "clazz": "GetAvailableQueryEnginesUseCase$QueryEngine"}}
+
 class RestQueryApi():
     def __init__(self, requester: Requester, poller_builder: ResponsePollerBuilder):
         self.requester = requester
@@ -19,7 +23,7 @@ class RestQueryApi():
 
         (data, next_path) = poller(
             self.requester,
-            self.requester.post('query', json={'sql': query})
+            self.requester.post('query', json={'sql': query, 'preferredQueryEngine': preferredQueryEngine})
         )
         yield data
 
