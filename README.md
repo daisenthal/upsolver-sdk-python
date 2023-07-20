@@ -158,3 +158,5 @@ See Upsolver's [SQL Command Reference](https://docs.upsolver.com/sqlake/sql-comm
 [SQLake workbench](https://sqlake.upsolver.com/) main page
 
 [Python examples from this README](https://github.com/Upsolver/upsolver-sdk-python/blob/develop/doc/dbapi-ex.py)
+
+[Upsolver Comunity Slack](https://join.slack.com/t/upsolvercommunity/shared_invite/zt-1zo1dbyys-hj28WfaZvMh4Z4Id3OkkhA)
